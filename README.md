@@ -74,6 +74,7 @@ python manage.py runserver
 * **개발 기간**: 2026.01.19 ~ 2026.02.03
 * **팀 구성**: 5명
 <br>
+
 | 이름 | 역할 |
 |------|--------|
 | [나솔림](https://github.com/solrimna)) | ‘벙개’ 모임 모집글 작성 기능 |
@@ -85,6 +86,7 @@ python manage.py runserver
 [요구사항 명세서](https://docs.google.com/spreadsheets/d/12-bzeP10GFYD7vwEOQrfJbKsLZVSEEEZ/edit?usp=sharing&ouid=116721417601261265482&rtpof=true&sd=true)
 
 <br>
+
 ---
  
 ## 🛠 기술 스택
@@ -100,6 +102,7 @@ python manage.py runserver
 | 버전 관리 | GitHub |
 
 <br>
+
 ---
  
 ## 🔸 주요 기능
