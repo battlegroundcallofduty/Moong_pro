@@ -64,3 +64,82 @@ python manage.py createsuperuser
 
 ### 5) 실행
 python manage.py runserver
+
+<br>
+---
+
+## 📌 프로젝트 개요
+
+* **개발 기간**: 2026.01.19 ~ 2026.02.03
+* **팀 구성**: 5명
+<br>
+| 이름 | 역할 |
+| --- | --- |
+| [나솔림](https://github.com/solrimna)) | ‘벙개’ 모임 모집글 작성 기능 |
+| [이영진](https://github.com/ilove0628yj-w) | ‘벙개’ 모임 참여 관리 |
+| [서호근](https://github.com/azure5finger-cmyk) | 회원 관리 기능 / 피드 하단 댓글 기능 |
+| [유민지](https://github.com/kittyjoa) | 마이페이지 조회/수정 및 활동이력 생성 |
+| [박지영](https://github.com/battlegroundcallofduty) | AI 해시태그 생성 및 검색 조회 기능 |
+[요구사항 명세서](https://docs.google.com/spreadsheets/d/12-bzeP10GFYD7vwEOQrfJbKsLZVSEEEZ/edit?usp=sharing&ouid=116721417601261265482&rtpof=true&sd=true)
+
+<br>
+---
+ 
+## 🛠 기술 스택
+ 
+| 분류 | 기술 |
+| --- | --- |
+| Language | Python |
+| Framework | Django |
+| 데이터베이스 | SQLite |
+| 프론트엔드 | HTML, CSS, JavaScript |
+| AI 연동 | OpenAI API |
+| 지도 | Kakao Map API |
+| 버전 관리 | GitHub |
+
+<br>
+---
+ 
+## 🔸 주요 기능
+ 
+* **회원 관리:** 회원 가입, 로그인, 로그아웃
+* **개인 계정 로그인 및 피드 접근 (마이페이지):**
+본인 또는 타 유저의 생성/참여/종료된 모임 목록 확인, 좋아요(또 뭉) 수 확인
+* **‘벙개’ 모임 모집 피드 작성**
+- 모집 피드 작성 / ai 기반 해시태그 생성
+- 참여자 존재 여부에 따라 삭제 기능 제한
+* **피드 하단 댓글 기능:**
+댓글 작성 및 삭제, 모임장(작성자)의 댓글 공지 기능
+* **검색 및 조회 기능:**
+해시태그 기반 검색 / 지도 api 연동 위치 기반 모임 검색
+* **‘벙개’ 모임 참여 관리:**
+상세 페이지에서 버튼을 이용한 모임 참여 및 취소, 참여자 목록 조회, 대기 기능
+<br>
+
+---
+ 
+## ▪️ 프로젝트 구조
+ 
+```
+Moong_pro/
+├── config/               # Django 설정
+├── moong/                # 메인 앱 (모임 게시글)
+├── users/                # 유저 앱
+├── locations/            # 지역 데이터
+├── templates/            # HTML 템플릿
+├── static/               # CSS, JS, 이미지
+├── docs/images/          # README 첨부 파일들
+├── manage.py
+├── requirements.txt      # 의존성 목록
+└── README.md
+```
+<br>
+
+---
+ 
+## 🔹 앞으로 추가할 내용 및 회고
+ 
+* **배포 추가한다면:** 무료 서비스 중엔 `Railway`, 유료 서비스면 `AWS EC2 + Docker` 예정
+* **배포 추가시 고려해야할 사항들:** `.env` 키들 환경변수로 따로 설정해야함, `DEBUG = FALSE` 변경, static 처리, SQLite보다 `PostgreSQL`이 나을것같음
+* 번개모임만 특화된 플랫폼이 아직 많이 없기 때문에 차별화를 좀 더 하면 실제 서비스로 구현도 가능해보임. 번개모임 관련 서비스 이용자들이 어떤 것들이 필요할지 좀 더 시장조사를 해보고 서비스를 추가해보고 싶음. 상업화가 된다면 수익 구조나 유료 멤버십 구상까지
+* 코드 가독성, 유지보수성, 효율성 높게 더 수정하고 싶다... 코드 리팩토링 예정!
