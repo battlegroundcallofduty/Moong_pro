@@ -77,15 +77,13 @@ python manage.py runserver
 
 | 이름 | 역할 |
 |------|--------|
-| [나솔림](https://github.com/solrimna)) | ‘벙개’ 모임 모집글 작성 기능 |
+| [나솔림](https://github.com/solrimna) | ‘벙개’ 모임 모집글 작성 기능 |
 | [이영진](https://github.com/ilove0628yj-w) | ‘벙개’ 모임 참여 관리 |
 | [서호근](https://github.com/azure5finger-cmyk) | 회원 관리 기능 / 피드 하단 댓글 기능 |
 | [유민지](https://github.com/kittyjoa) | 마이페이지 조회/수정 및 활동이력 생성 |
 | [박지영](https://github.com/battlegroundcallofduty) | AI 해시태그 생성 및 검색 조회 기능 |
 
-[요구사항 명세서](https://docs.google.com/spreadsheets/d/12-bzeP10GFYD7vwEOQrfJbKsLZVSEEEZ/edit?usp=sharing&ouid=116721417601261265482&rtpof=true&sd=true)
-
-<br>
+* [요구사항 명세서](https://docs.google.com/spreadsheets/d/12-bzeP10GFYD7vwEOQrfJbKsLZVSEEEZ/edit?usp=sharing&ouid=116721417601261265482&rtpof=true&sd=true)
 
 ---
  
@@ -148,3 +146,4 @@ Moong_pro/
 * **배포 추가시 고려해야할 사항들:** `.env` 키들 환경변수로 따로 설정해야함, `DEBUG = FALSE` 변경, static 처리, SQLite보다 `PostgreSQL`이 나을것같음
 * 번개모임만 특화된 플랫폼이 아직 많이 없기 때문에 차별화를 좀 더 하면 실제 서비스로 구현도 가능해보임. 번개모임 관련 서비스 이용자들이 어떤 것들이 필요할지 좀 더 시장조사를 해보고 서비스를 추가해보고 싶음. 상업화가 된다면 수익 구조나 유료 멤버십 구상까지
 * 코드 가독성, 유지보수성, 효율성 높게 더 수정하고 싶다... 코드 리팩토링 예정!
+<br>
