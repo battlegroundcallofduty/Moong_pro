@@ -73,7 +73,6 @@ python manage.py runserver
 
 * **개발 기간**: 2026.01.19 ~ 2026.02.03
 * **팀 구성**: 5명
-<br>
 
 | 이름 | 역할 |
 |------|--------|
@@ -112,8 +111,6 @@ python manage.py runserver
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
 
-<br>
-
 ---
 
 ## 🔸 주요 기능
@@ -129,8 +126,6 @@ python manage.py runserver
 | 마이페이지 | 생성/참여/종료 모임 이력, 받은 또뭉(좋아요) 수 조회 |
 | 지도 연동 | Kakao Map API 기반 모임 장소 위치 표시 |
 | 스케줄러 | APScheduler로 매일 00:05 만료 게시글 자동 상태 처리 |
-
-<br>
 
 ---
 
@@ -178,8 +173,6 @@ flowchart TD
     M --> N[최종 게시\ncomplete=True]
     N --> O[피드 목록 노출]
 ```
-
-<br>
 
 ---
 
@@ -249,8 +242,6 @@ def tag_feeds(request, tag_name):
 
 프로젝트 초기 메인페이지 레이아웃과 네비게이션 구조를 설계해 팀원들의 공통 UI 기반을 마련했습니다.  
 로고, 피드 카드, 해시태그 사이드 영역 등 전반적인 마크업 작업을 담당했습니다.
-
-<br>
 
 ---
 
