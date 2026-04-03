@@ -222,22 +222,10 @@ loc_tags.append(a_short)
 loc_tags.extend(details[:2])          # 구·동 최대 2개 추가
 ```
 
-### 3. 피드 목록 & 실시간 만료 필터링
+### 3. 피드 목록 & 글 내용 검색
 
-DB 상태를 변경하지 않고, 페이지 조회 시점에 당일 모임 시간이 지난 게시글을 view 단에서 제외합니다.
-
-```python
-# views.py — main()
-posts = Post.objects.filter(
-    complete=True, is_cancelled=False, moim_finished=False
-).exclude(
-    Q(moim_date__lt=now.date()) |
-    Q(moim_date=now.date(), moim_time__lt=now.time())  # 오늘 날짜지만 시간 경과
-).prefetch_related('images', 'hashtags')
-
-if search:
-    posts = posts.filter(content__icontains=search)    # 글 내용 키워드 검색
-```
+메인 피드 목록 페이지(`main.html`)와 해시태그별 피드 페이지(`tag_feeds.html`)를 초기에 설계·구현했습니다.  
+글 제목·내용 키워드 검색 기능도 함께 담당했습니다.
 
 ### 4. 해시태그 피드 목록 페이지 (`tag_feeds`)
 
@@ -245,12 +233,16 @@ if search:
 
 ```python
 # views.py — tag_feeds()
-posts = Post.objects.filter(
-    hashtags__name=tag_name, complete=True,
-).exclude(
-    Q(moim_date__lt=now.date()) |
-    Q(moim_date=now.date(), moim_time__lt=now.time())
-).prefetch_related('images', 'hashtags').order_by('-create_time')
+def tag_feeds(request, tag_name):
+    posts = Post.objects.filter(
+        hashtags__name=tag_name,
+        complete=True,
+    ).prefetch_related('images', 'hashtags').order_by('-create_time')
+
+    return render(request, 'moong/tag_feeds.html', {
+        'tag_name': tag_name,
+        'posts': posts,
+    })
 ```
 
 ### 5. 메인페이지 초기 UI · 네비게이션 메뉴
