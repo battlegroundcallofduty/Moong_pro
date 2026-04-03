@@ -89,15 +89,28 @@ python manage.py runserver
 
 ## 🛠 기술 스택
 
+**Backend**
+
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Django](https://img.shields.io/badge/Django-092E20?style=flat-square&logo=django&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
+![APScheduler](https://img.shields.io/badge/APScheduler-4B8BBE?style=flat-square&logo=python&logoColor=white)
+
+**Frontend**
+
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+
+**API / 외부 서비스**
+
 ![OpenAI](https://img.shields.io/badge/OpenAI_API-412991?style=flat-square&logo=openai&logoColor=white)
 ![KakaoMap](https://img.shields.io/badge/Kakao_Map_API-FFCD00?style=flat-square&logo=kakao&logoColor=black)
+
+**DevTools**
+
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
 
 <br>
 
@@ -123,29 +136,47 @@ python manage.py runserver
 
 ## ▪️ 프로젝트 구조
 
+```
+moong/
+├── config/                  # Django 설정
+│   ├── settings.py
+│   └── urls.py
+├── moong/                   # 핵심 앱 (모임 게시글)
+│   ├── models.py            # Post, Hashtag, Participation, Comment, Image, Ddomoong
+│   ├── views.py             # 피드, 해시태그, AI 태그 생성, 검색
+│   ├── urls.py
+│   └── scheduler.py         # APScheduler — 만료 게시글 자동 처리 (매일 00:05)
+├── users/                   # 회원 앱
+│   ├── models.py            # Custom User (AbstractUser 기반)
+│   └── views.py             # 회원가입, 로그인, 마이페이지
+├── locations/               # 지역 데이터 앱
+│   ├── models.py            # Location (시/군/구/읍면동)
+│   └── management/commands/import_locations.py
+├── templates/
+│   ├── moong/               # 피드, 글작성, 상세, 해시태그 등
+│   └── users/               # 회원가입, 로그인, 마이페이지
+├── static/                  # CSS, JS, 이미지
+└── manage.py
+```
+
+### AI 해시태그 생성 플로우
+
 ```mermaid
-graph TD
-    ROOT["🗂 MOONG 프로젝트"]
-
-    ROOT --> CONFIG["config/\n⚙️ Django 설정 (settings, urls)"]
-    ROOT --> MOONG["moong/\n📋 핵심 앱"]
-    ROOT --> USERS["users/\n👤 회원 앱"]
-    ROOT --> LOCATIONS["locations/\n📍 지역 앱"]
-    ROOT --> TEMPLATES["templates/\n🖥 HTML 템플릿"]
-
-    MOONG --> M1["models.py\nPost · Hashtag · PostHashtag\nParticipation · Comment\nImage · Ddomoong"]
-    MOONG --> M2["views.py\n피드 목록 · 글 작성 · 해시태그\nAI 태그 생성 · 검색"]
-    MOONG --> M3["scheduler.py\n만료 게시글 자동 처리\n(APScheduler, 매일 00:05)"]
-    MOONG --> M4["urls.py"]
-
-    USERS --> U1["models.py\nCustom User (AbstractUser)"]
-    USERS --> U2["views.py\n회원가입 · 로그인 · 마이페이지"]
-
-    LOCATIONS --> L1["models.py\nLocation"]
-    LOCATIONS --> L2["import_locations.py\n초기 지역 데이터 적재"]
-
-    TEMPLATES --> T1["moong/\n피드 · 글작성 · 상세 · 해시태그"]
-    TEMPLATES --> T2["users/\n회원가입 · 로그인 · 마이페이지"]
+flowchart TD
+    A[글 작성 페이지] --> B{임시저장 글 있음?}
+    B -- 있음 --> C[임시저장 글 불러오기]
+    B -- 없음 --> D[새 글 작성]
+    C & D --> E[글 내용 입력]
+    E --> F[임시저장]
+    F --> G[DB 저장\ncomplete=False]
+    G --> H[지역 해시태그 파싱\nextract_location_tags]
+    G --> I[OpenAI API 호출\ngpt-4o-mini]
+    H & I --> J[태그 합산 최대 6개]
+    J --> K[Hashtag / PostHashtag DB 저장]
+    K --> L[작성 화면에 태그 반영]
+    L --> M[사용자 태그 수정 · 추가]
+    M --> N[최종 게시\ncomplete=True]
+    N --> O[피드 목록 노출]
 ```
 
 <br>
@@ -158,27 +189,74 @@ graph TD
 
 ### 1. AI 해시태그 자동 생성
 
-글 작성 시 **임시저장 → AI 태그 생성** 단계를 설계하고 구현했습니다.
+글 임시저장 시 OpenAI API를 호출해 게시글 내용 기반 해시태그를 자동 생성합니다.  
+지역 태그(파싱)와 키워드 태그(AI)를 합산해 최대 6개로 제한하고, `Hashtag` / `PostHashtag` 테이블에 저장합니다.
 
-- 글 제목·내용을 OpenAI API에 전달해 해시태그를 자동 추출 (`views.py`)
-- 지역명 파싱 로직을 직접 구현해 위치 기반 해시태그도 자동 생성
-- 임시저장 상태(`complete=False`)와 게시 상태를 구분하는 단계별 플로우 설계
-- 사용자가 AI 생성 태그를 수정하거나 직접 태그를 추가·삭제할 수 있는 UI 구현
+```python
+# views.py — ai_tags()
+def ai_tags(content, location):
+    loc_tags = extract_location_tags(location)  # 지역 태그 먼저 추출
+    needed_count = 6 - len(loc_tags)            # 키워드 태그 개수 결정
 
-### 2. 해시태그 피드 목록 페이지 (`tag_feeds`)
+    response = openai.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.3,
+    )
+    result = response.choices[0].message.content.strip()
+    keyword_tags = [k.strip().replace('#', '') for k in result.split(',')]
 
-- 특정 해시태그를 클릭하면 해당 태그가 붙은 모임 목록만 필터링해 보여주는 전용 페이지 구현
-- 당일 모임 시간이 경과한 게시글은 실시간으로 목록에서 제외 (DB 상태 변경 없이 view 단에서 처리)
+    total_tags = [t for t in (loc_tags + keyword_tags) if t and t != '|']
+    return total_tags[:6]
+```
 
-### 3. 피드 목록 & 글 내용 검색 (`main`, `feeds`)
+### 2. 지역 해시태그 파싱
 
-- 전체 피드 목록 페이지 및 키워드 기반 글 내용 검색 기능 구현
-- 해시태그 목록 사이드 영역 구성 (전체 해시태그 조회 및 클릭 연결)
+모임 장소의 주소 문자열을 파싱해 시·구·동 단위 지역 태그를 자동 생성합니다.  
+광역시/도 → 약칭 변환 매핑(예: `서울특별시` → `서울`)을 딕셔너리로 직접 구현했습니다.
 
-### 4. 메인페이지 초기 UI · 네비게이션 메뉴
+```python
+# views.py — extract_location_tags()
+a_short = short_names.get(a, a[:2])   # ex) 서울특별시 → 서울
+loc_tags.append(a_short)
+loc_tags.extend(details[:2])          # 구·동 최대 2개 추가
+```
 
-- 프로젝트 초기 메인페이지 레이아웃 및 네비게이션 구조 설계
-- 로고, 사이트 설명 영역, 피드 카드 이미지 크기 등 전반적인 UI 기반 마크업 작업
+### 3. 피드 목록 & 실시간 만료 필터링
+
+DB 상태를 변경하지 않고, 페이지 조회 시점에 당일 모임 시간이 지난 게시글을 view 단에서 제외합니다.
+
+```python
+# views.py — main()
+posts = Post.objects.filter(
+    complete=True, is_cancelled=False, moim_finished=False
+).exclude(
+    Q(moim_date__lt=now.date()) |
+    Q(moim_date=now.date(), moim_time__lt=now.time())  # 오늘 날짜지만 시간 경과
+).prefetch_related('images', 'hashtags')
+
+if search:
+    posts = posts.filter(content__icontains=search)    # 글 내용 키워드 검색
+```
+
+### 4. 해시태그 피드 목록 페이지 (`tag_feeds`)
+
+특정 해시태그 클릭 시 해당 태그가 연결된 게시글만 필터링해 전용 페이지에 노출합니다.
+
+```python
+# views.py — tag_feeds()
+posts = Post.objects.filter(
+    hashtags__name=tag_name, complete=True,
+).exclude(
+    Q(moim_date__lt=now.date()) |
+    Q(moim_date=now.date(), moim_time__lt=now.time())
+).prefetch_related('images', 'hashtags').order_by('-create_time')
+```
+
+### 5. 메인페이지 초기 UI · 네비게이션 메뉴
+
+프로젝트 초기 메인페이지 레이아웃과 네비게이션 구조를 설계해 팀원들의 공통 UI 기반을 마련했습니다.  
+로고, 피드 카드, 해시태그 사이드 영역 등 전반적인 마크업 작업을 담당했습니다.
 
 <br>
 
