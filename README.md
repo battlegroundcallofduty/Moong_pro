@@ -86,62 +86,120 @@ python manage.py runserver
 * [요구사항 명세서](https://docs.google.com/spreadsheets/d/12-bzeP10GFYD7vwEOQrfJbKsLZVSEEEZ/edit?usp=sharing&ouid=116721417601261265482&rtpof=true&sd=true)
 
 ---
- 
+
 ## 🛠 기술 스택
- 
-| 분류 | 기술 |
-| --- | --- |
-| Language | Python |
-| Framework | Django |
-| 데이터베이스 | SQLite |
-| 프론트엔드 | HTML, CSS, JavaScript |
-| AI 연동 | OpenAI API |
-| 지도 | Kakao Map API |
-| 버전 관리 | GitHub |
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-092E20?style=flat-square&logo=django&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+![OpenAI](https://img.shields.io/badge/OpenAI_API-412991?style=flat-square&logo=openai&logoColor=white)
+![KakaoMap](https://img.shields.io/badge/Kakao_Map_API-FFCD00?style=flat-square&logo=kakao&logoColor=black)
+![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)
 
 <br>
 
 ---
- 
+
 ## 🔸 주요 기능
- 
-* **회원 관리:** 회원 가입, 로그인, 로그아웃
-* **개인 계정 로그인 및 피드 접근 (마이페이지):**
-본인 또는 타 유저의 생성/참여/종료된 모임 목록 확인, 좋아요(또 뭉) 수 확인
-* **‘벙개’ 모임 모집 피드 작성** <br> ➖ 모집 피드 작성 / ai 기반 해시태그 생성 <br> ➖ 참여자 존재 여부에 따라 삭제 기능 제한
-* **피드 하단 댓글 기능:**
-댓글 작성 및 삭제, 모임장(작성자)의 댓글 공지 기능
-* **검색 및 조회 기능:**
-해시태그 기반 검색 / 지도 api 연동 위치 기반 모임 검색
-* **‘벙개’ 모임 참여 관리:**
-상세 페이지에서 버튼을 이용한 모임 참여 및 취소, 참여자 목록 조회, 대기 기능
+
+| 기능 | 설명 |
+|------|------|
+| 회원 관리 | 회원가입, 로그인/로그아웃, 프로필 수정 |
+| 피드 목록 | 메인 피드 목록 및 실시간 만료 필터링 (당일 모임 시간 경과 시 자동 숨김) |
+| 모임 모집글 작성 | 임시저장 → AI 해시태그 자동 생성 → 게시 단계별 플로우, 이미지 첨부 |
+| 해시태그 검색 | 해시태그 클릭 시 해당 태그 피드 목록 페이지 이동, 글 내용 키워드 검색 |
+| 모임 참여 관리 | 참여 신청/취소, 모임장 승인/거절, 정원 초과 시 대기 순번 자동 배정 |
+| 댓글 | 댓글 작성/삭제, 모임장 댓글 공지 표시 |
+| 마이페이지 | 생성/참여/종료 모임 이력, 받은 또뭉(좋아요) 수 조회 |
+| 지도 연동 | Kakao Map API 기반 모임 장소 위치 표시 |
+| 스케줄러 | APScheduler로 매일 00:05 만료 게시글 자동 상태 처리 |
+
 <br>
 
 ---
- 
+
 ## ▪️ 프로젝트 구조
- 
+
+```mermaid
+graph TD
+    ROOT["🗂 MOONG 프로젝트"]
+
+    ROOT --> CONFIG["config/\n⚙️ Django 설정 (settings, urls)"]
+    ROOT --> MOONG["moong/\n📋 핵심 앱"]
+    ROOT --> USERS["users/\n👤 회원 앱"]
+    ROOT --> LOCATIONS["locations/\n📍 지역 앱"]
+    ROOT --> TEMPLATES["templates/\n🖥 HTML 템플릿"]
+
+    MOONG --> M1["models.py\nPost · Hashtag · PostHashtag\nParticipation · Comment\nImage · Ddomoong"]
+    MOONG --> M2["views.py\n피드 목록 · 글 작성 · 해시태그\nAI 태그 생성 · 검색"]
+    MOONG --> M3["scheduler.py\n만료 게시글 자동 처리\n(APScheduler, 매일 00:05)"]
+    MOONG --> M4["urls.py"]
+
+    USERS --> U1["models.py\nCustom User (AbstractUser)"]
+    USERS --> U2["views.py\n회원가입 · 로그인 · 마이페이지"]
+
+    LOCATIONS --> L1["models.py\nLocation"]
+    LOCATIONS --> L2["import_locations.py\n초기 지역 데이터 적재"]
+
+    TEMPLATES --> T1["moong/\n피드 · 글작성 · 상세 · 해시태그"]
+    TEMPLATES --> T2["users/\n회원가입 · 로그인 · 마이페이지"]
 ```
-Moong_pro/
-├── config/               # Django 설정
-├── moong/                # 메인 앱 (모임 게시글)
-├── users/                # 유저 앱
-├── locations/            # 지역 데이터
-├── templates/            # HTML 템플릿
-├── static/               # CSS, JS, 이미지
-├── docs/images/          # README 첨부 파일들
-├── manage.py
-├── requirements.txt      # 의존성 목록
-└── README.md
-```
+
 <br>
 
 ---
- 
-## 🔹 앞으로 추가할 내용 및 회고
- 
-* **배포 추가한다면:** 무료 서비스 중엔 `Railway`, 유료 서비스면 `AWS EC2 + Docker` 예정
-* **배포 추가시 고려해야할 사항들:** `.env` 키들 환경변수로 따로 설정해야함, `DEBUG = FALSE` 변경, static 처리, SQLite보다 `PostgreSQL`이 나을것같음
-* 번개모임만 특화된 플랫폼이 아직 많이 없기 때문에 차별화를 좀 더 하면 실제 서비스로 구현도 가능해보임. 번개모임 관련 서비스 이용자들이 어떤 것들이 필요할지 좀 더 시장조사를 해보고 서비스를 추가해보고 싶음. 상업화가 된다면 수익 구조나 유료 멤버십 구상까지
-* 가독성, 유지보수성, 효율성 향상시키는 방향으로 코드 리팩토링 예정
+
+## 💡 내 담당 기능 상세
+
+> AI 해시태그 생성 · 해시태그 검색 · 피드 목록 · 메인페이지 UI · 네비게이션
+
+### 1. AI 해시태그 자동 생성
+
+글 작성 시 **임시저장 → AI 태그 생성** 단계를 설계하고 구현했습니다.
+
+- 글 제목·내용을 OpenAI API에 전달해 해시태그를 자동 추출 (`views.py`)
+- 지역명 파싱 로직을 직접 구현해 위치 기반 해시태그도 자동 생성
+- 임시저장 상태(`complete=False`)와 게시 상태를 구분하는 단계별 플로우 설계
+- 사용자가 AI 생성 태그를 수정하거나 직접 태그를 추가·삭제할 수 있는 UI 구현
+
+### 2. 해시태그 피드 목록 페이지 (`tag_feeds`)
+
+- 특정 해시태그를 클릭하면 해당 태그가 붙은 모임 목록만 필터링해 보여주는 전용 페이지 구현
+- 당일 모임 시간이 경과한 게시글은 실시간으로 목록에서 제외 (DB 상태 변경 없이 view 단에서 처리)
+
+### 3. 피드 목록 & 글 내용 검색 (`main`, `feeds`)
+
+- 전체 피드 목록 페이지 및 키워드 기반 글 내용 검색 기능 구현
+- 해시태그 목록 사이드 영역 구성 (전체 해시태그 조회 및 클릭 연결)
+
+### 4. 메인페이지 초기 UI · 네비게이션 메뉴
+
+- 프로젝트 초기 메인페이지 레이아웃 및 네비게이션 구조 설계
+- 로고, 사이트 설명 영역, 피드 카드 이미지 크기 등 전반적인 UI 기반 마크업 작업
+
+<br>
+
+---
+
+## 🔹 회고 및 개선 방향
+
+### 배포 계획
+| 구분 | 내용 |
+|------|------|
+| 무료 배포 | Railway |
+| 유료 배포 | AWS EC2 + Docker |
+| 배포 시 필수 사항 | `.env` 환경변수 분리, `DEBUG=False`, static 파일 처리, SQLite → PostgreSQL 전환 |
+
+### 기술적 개선 포인트
+- **AI 태그 품질 향상**: 현재 단순 키워드 추출 방식에서 프롬프트 엔지니어링 고도화 검토
+- **검색 고도화**: 현재 키워드 검색에서 해시태그 + 위치 + 날짜 복합 필터링으로 확장
+- **코드 리팩토링**: views.py 비대화 문제 해소를 위한 서비스 레이어 분리, 클래스 기반 뷰(CBV) 전환 검토
+- **DB 최적화**: 피드 목록 쿼리에 `select_related` / `prefetch_related` 적용
+
+### 서비스 방향성
+- 번개모임 특화 플랫폼이 아직 부족한 시장에서, 위치·시간 기반 필터 고도화와 알림 기능 추가 시 실서비스 가능성 있음
+- 상업화 시 유료 멤버십 또는 모임 주선 수수료 수익 구조 검토 가능
 <br>
