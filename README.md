@@ -93,10 +93,11 @@ moong/
 │   ├── settings.py
 │   └── urls.py
 ├── moong/                   # 핵심 앱 (모임 게시글)
-│   ├── models.py            # Post, Hashtag, Participation, Comment, Image, Ddomoong
+│   ├── models.py            # Post, Hashtag, PostHashtag, Participation, Comment, Image, Ddomoong
 │   ├── views.py             # 피드, 해시태그, AI 태그 생성, 검색
 │   ├── urls.py
-│   └── scheduler.py         # APScheduler — 만료 게시글 자동 처리 (매일 00:05)
+│   ├── scheduler.py         # APScheduler — 만료 게시글 자동 처리 (매일 00:05)
+│   └── management/commands/expire_posts.py  # 스케줄러가 호출하는 만료 처리 커맨드
 ├── users/                   # 회원 앱
 │   ├── models.py            # Custom User (AbstractUser 기반)
 │   └── views.py             # 회원가입, 로그인, 마이페이지
@@ -149,7 +150,10 @@ def ai_tags(content, location):
 
     response = openai.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}],
+        messages=[
+            {"role": "system", "content": "해시태그 생성기"},
+            {"role": "user", "content": prompt}
+        ],
         temperature=0.3,
     )
     result = response.choices[0].message.content.strip()
@@ -174,7 +178,7 @@ loc_tags.extend(details[:2])          # 구·동 최대 2개 추가
 ### 3. 피드 목록 & 글 내용 검색
 
 메인 피드 목록 페이지(`main.html`)와 해시태그별 피드 페이지(`tag_feeds.html`)를 초기에 설계·구현했습니다.  
-글 제목·내용 키워드 검색 기능도 함께 담당했습니다.
+글 내용 키워드 검색 기능도 함께 담당했습니다.
 
 ### 4. 해시태그 피드 목록 페이지 (`tag_feeds`)
 
