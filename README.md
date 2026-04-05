@@ -131,6 +131,8 @@ flowchart TD
     N --> O[피드 목록 노출]
 ```
 
+> 단, 임시저장 없이 바로 최종 게시하거나 태그를 모두 해제한 경우, 태그를 자동으로 재생성한 후 글이 게시됩니다.
+
 ---
 
 ## 💡 내 담당 기능 상세
@@ -162,6 +164,8 @@ def ai_tags(content, location):
     total_tags = [t for t in (loc_tags + keyword_tags) if t and t != '|']
     return total_tags[:6]
 ```
+
+> 실제 코드에는 입력값 가드 조건(`if not content and not location`)과 API 호출 실패에 대비한 `try-except` 에러 처리가 포함되어 있습니다.
 
 ### 2. 지역 해시태그 파싱
 
@@ -197,6 +201,8 @@ def tag_feeds(request, tag_name):
         'posts': posts,
     })
 ```
+
+> 현재 코드에는 다른 팀원분이 모임 시간 기준 실시간 필터링(`.exclude()`)을 추가한 상태입니다.
 
 ### + 메인페이지 초기 UI · 네비게이션 메뉴
 
