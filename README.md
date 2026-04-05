@@ -165,7 +165,7 @@ def ai_tags(content, location):
     return total_tags[:6]
 ```
 
-> 실제 코드에는 입력값 가드 조건(`if not content and not location`)과 API 호출 실패에 대비한 `try-except` 에러 처리가 포함되어 있습니다.
+> 실제 코드에는 입력값 가드 조건(`if not content and not location`), API 호출 실패에 대비한 `try-except` 에러 처리, prompt가 포함되어 있습니다.
 
 ### 2. 지역 해시태그 파싱
 
