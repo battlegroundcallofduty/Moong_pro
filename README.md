@@ -10,6 +10,7 @@
 
 * **개발 기간**: 2026.01.19 - 2026.02.03
 * **구성**: 5인 팀 프로젝트
+* [원본 팀 레포](https://github.com/solrimna/moong)
 
 | 이름 | 역할 |
 |------|--------|
@@ -20,7 +21,6 @@
 | [박지영](https://github.com/battlegroundcallofduty) | AI 해시태그 생성 및 검색 조회 기능 |
 
 * [요구사항 명세서](https://docs.google.com/spreadsheets/d/12-bzeP10GFYD7vwEOQrfJbKsLZVSEEEZ/edit?usp=sharing&ouid=116721417601261265482&rtpof=true&sd=true)
-* [원본 팀 레포](https://github.com/solrimna/moong)
 
 ---
 
