@@ -1,8 +1,8 @@
 # MOONG! 번개모임 SNS
 - 사용자가 즉시 모임을 생성하고 참여할 수 있는 '벙개 만남 중심 플랫폼'
 - 단순한 인스타그램 클론 코딩에서 벗어난, SNS 플랫폼 프로젝트 수행.
+- [프로젝트 발표자료](https://docs.google.com/presentation/d/13RiIDvLdFT1VZj0Q3EYMLUbsCBPHW3Pq-bJ6WHqiBQ8/edit?usp=sharing)     
 
-[프로젝트 발표자료](https://docs.google.com/presentation/d/13RiIDvLdFT1VZj0Q3EYMLUbsCBPHW3Pq-bJ6WHqiBQ8/edit?usp=sharing)     
 🔗 팀 프로젝트 종료 후 개인적으로 배포한 버전은 [여기](https://github.com/battlegroundcallofduty/Moong_deploy)에서 확인할 수 있습니다.
 
 ---
