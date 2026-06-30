@@ -304,5 +304,5 @@ python manage.py runserver
 | 구분 | 내용 |
 |------|------|
 | 무료 배포 | Railway |
-| 유료 배포 | AWS EC2 + Docker |
-| 배포 시 필수 사항 | `.env` 환경변수 분리, `DEBUG=False`, static 파일 처리, SQLite → PostgreSQL 전환 |
+| 유료 배포 | AWS EC2 |
+| 배포 시 필수 사항 | `.env` 환경변수 분리, `DEBUG=False`, static 파일 처리 |
