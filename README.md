@@ -3,7 +3,7 @@
 - 단순한 인스타그램 클론 코딩에서 벗어난, SNS 플랫폼 프로젝트 수행.
 - [프로젝트 발표자료](https://docs.google.com/presentation/d/13RiIDvLdFT1VZj0Q3EYMLUbsCBPHW3Pq-bJ6WHqiBQ8/edit?usp=sharing)     
 
-🔗 팀 프로젝트 종료 후 개인적으로 배포한 버전은 [여기](https://github.com/battlegroundcallofduty/Moong_deploy)에서 확인할 수 있습니다.
+🔗 팀 프로젝트 종료 후 개인적으로 배포한 버전: [(https://github.com/battlegroundcallofduty/Moong_deploy)]
 
 ---
 
@@ -300,9 +300,9 @@ python manage.py runserver
 - 번개모임 특화 플랫폼이 아직 부족한 시장에서, 위치·시간 기반 필터 고도화와 알림 기능 추가 시 실서비스 가능성 있음
 - 상업화 시 유료 멤버십 또는 모임 주선 수수료 수익 구조 검토 가능
 
-### 배포 계획
+### ~~배포 계획~~  →  AWS EC2로 개인 배포 완료 [(https://moong.site/)]
 | 구분 | 내용 |
 |------|------|
-| 무료 배포 | Railway |
-| 유료 배포 | AWS EC2 |
+| 무료 배포일 경우 | Railway |
+| 유료 배포일 경우 | AWS EC2 |
 | 배포 시 필수 사항 | `.env` 환경변수 분리, `DEBUG=False`, static 파일 처리 |
