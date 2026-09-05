@@ -1,13 +1,29 @@
 # MOONG! 번개모임 SNS
 - 사용자가 즉시 모임을 생성하고 참여할 수 있는 '벙개 만남 중심 플랫폼'
 - 단순한 인스타그램 클론 코딩에서 벗어난, SNS 플랫폼 프로젝트 수행.
-- [프로젝트 발표자료](https://docs.google.com/presentation/d/13RiIDvLdFT1VZj0Q3EYMLUbsCBPHW3Pq-bJ6WHqiBQ8/edit?usp=sharing)     
+- [프로젝트 발표자료](https://docs.google.com/presentation/d/13RiIDvLdFT1VZj0Q3EYMLUbsCBPHW3Pq-bJ6WHqiBQ8/edit?usp=sharing)
+- [요구사항 명세서](https://docs.google.com/spreadsheets/d/12-bzeP10GFYD7vwEOQrfJbKsLZVSEEEZ/edit?usp=sharing&ouid=116721417601261265482&rtpof=true&sd=true)  
 
-🔗 팀 프로젝트 종료 후 개인적으로 배포한 버전: [(https://github.com/battlegroundcallofduty/Moong_deploy)]
+🔗 프로젝트 종료 후 개인적으로 배포: [(https://github.com/battlegroundcallofduty/Moong_deploy)]
 
 ---
 
-## 📌 프로젝트 개요
+## 목차
+
+- [프로젝트 개요](#프로젝트-개요)
+- [기술 스택](#기술-스택)
+- [주요 기능](#주요-기능)
+- [스크린샷 및 데모 실행 화면](#스크린샷-및-데모-실행-화면)
+- [프로젝트 구조](#프로젝트-구조)
+- [AI 해시태그 생성 플로우](#AI-해시태그-생성-플로우)
+- [내 담당 기능 상세](#내-담당-기능-상세)
+- [트러블슈팅](#트러블슈팅)
+- [로컬 실행 방법](#로컬-실행-방법)
+- [회고 및 개선 방향](#회고-및-개선-방향)
+
+---
+
+## 프로젝트 개요
 
 * **개발 기간**: 2026.01.19 - 2026.02.03
 * **구성**: 5인 팀 프로젝트
@@ -21,11 +37,9 @@
 | [유민지](https://github.com/kittyjoa) | 마이페이지 조회/수정 및 활동이력 생성 |
 | [박지영](https://github.com/battlegroundcallofduty) | AI 해시태그 생성 및 검색 조회 기능 |
 
-* [요구사항 명세서](https://docs.google.com/spreadsheets/d/12-bzeP10GFYD7vwEOQrfJbKsLZVSEEEZ/edit?usp=sharing&ouid=116721417601261265482&rtpof=true&sd=true)
-
 ---
 
-## 🛠 기술 스택
+## 기술 스택
 
 **Backend**
 
@@ -52,7 +66,7 @@
 
 ---
 
-## 🔸 주요 기능
+## 주요 기능
 
 | 기능 | 설명 |
 |------|------|
@@ -87,7 +101,7 @@
 
 ---
 
-## ▪️ 프로젝트 구조
+## 프로젝트 구조
 
 ```
 moong/
@@ -113,7 +127,7 @@ moong/
 └── manage.py
 ```
 
-### AI 해시태그 생성 플로우
+## AI 해시태그 생성 플로우
 
 ```mermaid
 flowchart TD
@@ -137,7 +151,7 @@ flowchart TD
 
 ---
 
-## 💡 내 담당 기능 상세
+## 내 담당 기능 상세
 
 > AI 해시태그 생성 · 해시태그 검색 · 피드 목록
 
@@ -209,7 +223,7 @@ def tag_feeds(request, tag_name):
 
 ---
 
-## 🐛 트러블슈팅
+## 트러블슈팅
 
 ### 임시저장 후 해시태그 미노출
 
@@ -231,7 +245,7 @@ def tag_feeds(request, tag_name):
 - **해결**: Location 모델에서 실제 지역명 전체를 set으로 추출하여, 해시태그 이름이 정확히 일치할 때만 지역 태그로 분류하도록 변경 (`get_location_keywords()` + `categorize_hashtags()` 분리)
 
 ---
-## ▪️ 로컬 실행 방법
+## 로컬 실행 방법
 
 회원가입 화면의 '활동 지역' 목록은 초기 데이터 적재 후 정상 노출됩니다.
 
@@ -287,7 +301,7 @@ python manage.py runserver
 
 ---
 
-## 🔹 회고 및 개선 방향
+## 회고 및 개선 방향
 
 ### 기술적 개선 포인트
 - **AI 태그 품질 향상**: 현재 단순 키워드 추출 방식에서 프롬프트 엔지니어링 고도화 검토
